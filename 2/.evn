@@ -1,0 +1,1 @@
+DATABASE_URL=postgresql://kraken:1234@localhost:5432/task_8_2

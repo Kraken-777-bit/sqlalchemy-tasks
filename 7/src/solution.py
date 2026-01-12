@@ -15,5 +15,18 @@ Base.metadata.create_all(engine)
 
 
 # BEGIN (write your solution here)
-
+def delete_director(session, director_id):
+    """
+    Удаляет режиссёра и все связанные с ним фильмы.
+    """
+    # Получаем режиссёра по ID
+    director = session.get(Director, director_id)
+    
+    if director is None:
+        # Режиссёр не найден
+        return
+    
+    # Удаляем режиссёра (связанные фильмы удалятся каскадно)
+    session.delete(director)
+    session.commit()
 # END

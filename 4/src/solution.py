@@ -15,5 +15,73 @@ Base.metadata.create_all(engine)
 
 
 # BEGIN (write your solution here)
+def get_all_movies(session):
+    """
+    Возвращает список всех фильмов в заданном формате.
+    """
+    query = select(Movie).order_by(Movie.id)  # Сортировка по ID
+    movies = session.scalars(query).all()
+    
+    result = []
+    for movie in movies:
+        movie_str = (
+            f"{movie.title} by {movie.director}, "
+            f"released on {movie.release_date}, "
+            f"duration: {movie.duration} min, "
+            f"genre: {movie.genre}, "
+            f"rating: {movie.rating}"
+        )
+        result.append(movie_str)
+    
+    return result
 
+
+def get_movies_by_director(session, director_name):
+    """
+    Возвращает список фильмов указанного режиссёра, отсортированных по дате выпуска.
+    """
+    query = (
+        select(Movie)
+        .where(Movie.director == director_name)
+        .order_by(Movie.release_date)
+    )
+    movies = session.scalars(query).all()
+    
+    result = []
+    for movie in movies:
+        movie_str = (
+            f"{movie.title} by {movie.director}, "
+            f"released on {movie.release_date}, "
+            f"duration: {movie.duration} min, "
+            f"genre: {movie.genre}, "
+            f"rating: {movie.rating}"
+        )
+        result.append(movie_str)
+    
+    return result
+
+
+def get_top_rated_movies(session, n):
+    """
+    Возвращает список из n фильмов с наивысшим рейтингом, отсортированных по убыванию рейтинга.
+    """
+    query = (
+        select(Movie)
+        .order_by(Movie.rating.desc())  # Используем .desc() вместо функции desc()
+        .limit(n)
+    )
+    movies = session.scalars(query).all()
+    
+    result = []
+    for movie in movies:
+        movie_str = (
+            f"{movie.title} by {movie.director}, "
+            f"released on {movie.release_date}, "
+            f"duration: {movie.duration} min, "
+            f"genre: {movie.genre}, "
+            f"rating: {movie.rating}"
+        )
+        result.append(movie_str)
+    
+    return result
 # END
